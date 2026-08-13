@@ -1,0 +1,36 @@
+// Exercises every construct in schema.pest. Not a real schema.
+
+/* block
+   comment */
+
+interface Named {
+    name: String @index
+    aliases: [String]?
+}
+
+node Doc @searchable implements Named {
+    gid: String @key
+    body: String?
+    tags: [String]
+    score: F64?
+    age: I32?
+    embedding: Vector(768) @embed("body", model="openai/text-embedding-3-large")
+    kind: enum(memo, note, send-out, in-person) @index
+    active: Bool?
+    seen_on: Date
+    seen_at: DateTime?
+
+    @unique(name, gid)
+    @index(seen_on)
+    @range(age, 0..200)
+    @range(score, -1.5..1.5)
+    @range(age, ..100)
+    @check(gid, "^doc:")
+}
+
+edge RefersTo: Doc -> Doc @card(0..1) {
+    weight: F64?
+    @index(weight)
+}
+
+edge Bare: Doc -> Doc
