@@ -1,0 +1,12 @@
+id = "omnigraph-pg"
+name = "OmniGraph Schema"
+version = "0.1.0"
+schema_version = 1
+authors = ["Andrew Jones <andrew@iceberglab.xyz>"]
+description = "Syntax highlighting for the OmniGraph schema language (.pg)"
+repository = "https://github.com/ModernRelay/omnigraph"
+
+[grammars.pg]
+repository = "file:///Users/andjones/Documents/repos/omnigraph"
+rev = "239884ffa5636fb9842c3b2dc35e9bceaca34077"
+path = "editors/tree-sitter-pg"
