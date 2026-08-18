@@ -1,0 +1,19 @@
+{
+  "grammars": [
+    {
+      "name": "gq",
+      "camelcase": "Gq",
+      "scope": "source.gq",
+      "path": ".",
+      "file-types": ["gq"]
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "Apache-2.0",
+    "description": "Tree-sitter grammar for the OmniGraph query language (.gq)",
+    "links": {
+      "repository": "https://github.com/ModernRelay/omnigraph"
+    }
+  }
+}

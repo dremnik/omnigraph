@@ -1,0 +1,9 @@
+{
+  "name": "tree-sitter-gq",
+  "version": "0.1.0",
+  "description": "Tree-sitter grammar for the OmniGraph query language (.gq)",
+  "main": "bindings/node",
+  "types": "bindings/node",
+  "keywords": ["tree-sitter", "omnigraph", "parser"],
+  "license": "Apache-2.0"
+}

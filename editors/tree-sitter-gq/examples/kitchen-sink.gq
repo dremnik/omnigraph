@@ -1,0 +1,71 @@
+// Kitchen-sink .gq exercising every construct in query.pest that the
+// checked-in fixtures (test.gq, search.gq) don't already cover.
+
+/* Block comments
+   are supported too. */
+
+// Annotations, nullable and list params, prop-match block, filter ops.
+query annotated($name: String, $tags: [String], $min: I64?)
+    @description("Finds people by name prefix and tag list")
+    @instruction("Prefer exact matches")
+{
+    match {
+        $p: Person { name: $name, active: true }
+        $p.name starts_with "A"
+        $p.bio contains "engineer"
+        $p.age >= $min
+    }
+    return { $p.name, $p.age as years }
+    order { $p.age desc, $p.name asc }
+    limit 10
+}
+
+// Edge binding, undirected edge, traversal bounds, negation.
+query social($name: String) {
+    match {
+        $p: Person { name: $name }
+        $p $w:knows $f
+        $f <knows> $peer
+        $p knows{1,3} $reach
+        $p follows{2,} $far
+        not {
+            $f worksAt $c
+            $c: Company { defunct: true }
+        }
+    }
+    return { $f.name, $w.since, count($peer) as peers }
+}
+
+// Hybrid ranking: rrf over bm25 + nearest, with a weight.
+query hybrid($q: String, $vec: Vector(768)) {
+    match {
+        $d: Doc
+        fuzzy($d.title, $q, 2)
+    }
+    return { $d.slug, $d.title }
+    order { rrf(nearest($d.embedding, $vec), bm25($d.body, $q), 60) }
+    limit 5
+}
+
+// Literals: list, date, datetime, float, bool, now().
+query literals() {
+    match {
+        $e: Event { tags: ["launch", "beta"], score: 0.75, public: true }
+        $e.starts_at > date("2026-01-01")
+        $e.ends_at < datetime("2026-12-31T23:59:59Z")
+        $e.updated_at < now()
+    }
+    return { $e.name }
+}
+
+// Mutations: insert, update … set … where, delete … where.
+query set_up($name: String) {
+    insert Person {
+        name: $name,
+        age: 30,
+        joined: date("2026-08-18"),
+    }
+    insert Person { name: "Bob", age: 41 }
+    update Person set { age: 31, active: true } where name = $name
+    delete Person where age >= 99
+}
