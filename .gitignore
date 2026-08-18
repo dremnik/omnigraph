@@ -29,3 +29,6 @@ demo/*.omni/
 /schema-prior-art.md
 mdrip/
 crates/omnigraph/benches/results.jsonl
+
+# Zed dev-extension build artifacts (grammar checkouts + compiled wasm)
+/editors/zed/grammars/

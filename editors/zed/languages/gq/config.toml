@@ -1,0 +1,13 @@
+name = "OmniGraph Query"
+grammar = "gq"
+path_suffixes = ["gq"]
+line_comments = ["// "]
+block_comment = ["/* ", " */"]
+tab_size = 4
+
+brackets = [
+    { start = "{", end = "}", close = true, newline = true },
+    { start = "(", end = ")", close = true, newline = false },
+    { start = "[", end = "]", close = true, newline = false },
+    { start = "\"", end = "\"", close = true, newline = false, not_in = ["comment", "string"] },
+]
